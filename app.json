@@ -13,6 +13,9 @@
       "bundleIdentifier": "com.anonymous.uno-mini-game"
     },
     "android": {},
-    "web": {}
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    }
   }
 }
