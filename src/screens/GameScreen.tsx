@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Alert, Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useDispatch, useSelector } from "react-redux";
 import { NPC_CHARACTERS } from "../config/npcConfig";
@@ -232,17 +232,21 @@ export const GameScreen: React.FC = () => {
         onWatch={() => dispatch(blockPenaltyWithReward())}
         onAccept={() => {
           if (game.pendingEffect?.challengeable) {
-            Alert.alert("Wild Draw 4", "You can still challenge after declining the ad.", [
-              { text: "Challenge", onPress: () => dispatch(resolveWild4Challenge({ challenge: true })) },
-              { text: "Accept Penalty", onPress: () => dispatch(acceptPenalty()) }
-            ]);
+            const doChallenge = window.confirm(
+              "Wild Draw 4 — You can still challenge after declining the ad.\n\nPress OK to Challenge, Cancel to Accept Penalty."
+            );
+            if (doChallenge) {
+              dispatch(resolveWild4Challenge({ challenge: true }));
+            } else {
+              dispatch(acceptPenalty());
+            }
           } else {
             dispatch(acceptPenalty());
           }
         }}
         onAdDone={() => {
           dispatch(completeRewardAd());
-          Alert.alert("Penalty blocked!", "Reward completed. Penalty canceled.");
+          window.alert("Penalty blocked! Reward completed. Penalty canceled.");
         }}
       />
 
